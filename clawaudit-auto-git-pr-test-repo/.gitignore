@@ -1,0 +1,11 @@
+# Dependencies
+node_modules/
+
+# Build / IDE
+*.pyc
+.idea/
+.vscode/
+*.sol.js
+
+# OS
+.DS_Store
