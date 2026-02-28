@@ -7,5 +7,9 @@ node_modules/
 .vscode/
 *.sol.js
 
+# Local setup (do not commit)
+SETUP.md
+**/SETUP.md
+
 # OS
 .DS_Store
