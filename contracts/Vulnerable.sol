@@ -2,10 +2,9 @@
 pragma solidity ^0.8.0;
 
 /**
- * Intentionally vulnerable contract for ClawAudit PR webhook testing.
- * Reentrancy: withdraw() sends ETH before updating balances.
+ * Patched contract with reentrancy fix.
  */
-contract VulnerableBank {
+contract PatchedBank {
     mapping(address => uint256) public balances;
 
     function deposit() external payable {
@@ -15,10 +14,12 @@ contract VulnerableBank {
     function withdraw() external {
         uint256 amount = balances[msg.sender];
         require(amount > 0, "Insufficient balance");
-        // VULNERABILITY: external call before state update allows reentrancy
-        (bool success, ) = msg.sender.call{value: amount}("");
+
+        // PATCH: Update state before sending funds (Checks-Effects-Interactions pattern)
+        balances[msg.sender] = 0; // Effect: Set balance to zero first
+
+        (bool success, ) = payable(msg.sender).call{value: amount}(""); // Interaction: Then send funds
         require(success, "Transfer failed");
-        balances[msg.sender] = 0;
     }
 
     function getBalance() external view returns (uint256) {
