@@ -11,6 +11,8 @@ contract PatchedBank {
         balances[msg.sender] += msg.value;
     }
 
+    
+
     function withdraw() external {
         uint256 amount = balances[msg.sender];
         require(amount > 0, "Insufficient balance");
